@@ -19,7 +19,7 @@ X = load_mat_hw1(1000,100)
 
 Xd = svd(X)
 error = 1e-10
-rank = (Xd.S .> error)' * (Xd.S .> error)  #Least rank to satisfy error rewuirement
+rank = (Xd.S .> error)' * (Xd.S .> error)  #Least rank to satisfy error requirement
 U = Xd.U[:, 1:rank]
 S= Diagonal(Xd.S[1:rank])
 V = Xd.V[:,1:rank]

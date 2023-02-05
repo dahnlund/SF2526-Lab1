@@ -1,6 +1,7 @@
 using LinearAlgebra
 using Plots
 using Random
+using StatsPlots, DataFrames
 
 function load_mat_hw1(n,p)  #From the given file "load_mat_hw1.jl"
     Random.seed!(0);
@@ -27,8 +28,8 @@ function QR_std(V)
         rT = q' * A
         Q = [Q q]
         R = [R; rT]
-        error[j] = norm(A)
         A = A - q * rT
+        error[j] = norm(A)
     end
     Q = Q[:,2:end]
     R = R[2:end,:]
@@ -47,8 +48,8 @@ function QR_greedy(V, p = minimum(size(V)))
         rT = q' * A
         Q = [Q q]
         R = [R; rT]
-        error[j] = norm(A)
         A = A - q * rT
+        error[j] = norm(A)
     end
     Q = Q[:,2:end]
     R = R[2:end,:]
@@ -61,13 +62,20 @@ Q1, R1, error1 = QR_std(A)
 
 display(Q1)
 display(R1)
-plot(error1)
+plot1 = plot(error1, yaxis=:log)
+savefig(plot1, "./figures/plot1")
+
 #Part C
 
 
 M = load_mat_hw1(1000,100)
-Q2, R2, error2 = QR_greedy(M)
-display(Q2)
-display(R2)
+Q2, R2, error2 = QR_std(M)
 display(norm(M-Q2*R2))
-plot(error2)
+
+# Part D
+
+M = load_mat_hw1(1000,100)
+Q2, R2, error3 = QR_greedy(M)
+display(norm(M-Q2*R2))
+plot2 = plot([error2, error3],yaxis=:log, label = ["Standard" "Greedy"], legend=:bottomleft)
+savefig(plot2, "./figures/plot2")
