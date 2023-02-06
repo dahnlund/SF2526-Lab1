@@ -47,7 +47,7 @@ end
 
 # Part A 
 
-Q, R, error = QR_greedy(A)
+Q, R, error = QR_greedy(A, 20)
 tmp = svd(R)
 U_hat = tmp.U
 S = Diagonal(tmp.S)
