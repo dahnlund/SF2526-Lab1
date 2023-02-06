@@ -1,11 +1,7 @@
-using LinearAlgebra
-using Plots
-using Random
-using StatsPlots, DataFrames
-include("utils.jl")
-
-
 """
+This is the file where all the used functions in the lab is placed
+"""
+
 function load_mat_hw1(n,p)  #From the given file "load_mat_hw1.jl"
     Random.seed!(0);
     p1 = Integer(floor(3*p/4));
@@ -58,27 +54,28 @@ function QR_greedy(V, p = minimum(size(V)))
     R = R[2:end,:]
     return Q,R,error
 end
-"""
-#Part B
-A = [1 2 2003 2005; 2 2 2002 2004; 3 2 2001 2003; 4 7 7005 7012]
-Q1, R1, error1 = QR_std(A)
 
-display(Q1)
-display(R1)
-plot1 = plot(error1, yaxis=:log)
-savefig(plot1, "./figures/plot1")
-
-#Part C
+function image2vec(im)
+    im_mat = channelview(im)
+    n1, n2, n3 = size(im_mat)
+    vec = reshape(im_mat, n1*n2*n3,1)
+    return float.(vec), (n1,n2,n3)
+end
 
 
-M = load_mat_hw1(1000,100)
-Q2, R2, error2 = QR_std(M)
-display(norm(M-Q2*R2))
+function randomSVD(A,k,p)
+    #Stage A
+    G = randn(size(A,2), k+p)
+    Y = A*G
+    Q,_,_ = QR_greedy(Y)
 
-# Part D
+    #Stage B 
+    B = Q'*A
+    tmp = svd(B)
+    U_hat = tmp.U
+    S = Diagonal(tmp.S)
+    V = tmp.V
+    U = Q*U_hat
 
-M = load_mat_hw1(1000,100)
-Q2, R2, error3 = QR_greedy(M)
-display(norm(M-Q2*R2))
-plot2 = plot([error2, error3],yaxis=:log, label = ["Standard" "Greedy"], legend=:bottomleft)
-savefig(plot2, "./figures/plot2")
+    return U[:,1:k],S[1:k,1:k],V[:,1:k]
+end

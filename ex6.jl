@@ -2,13 +2,8 @@ using LinearAlgebra
 using Images, Colors
 using Printf
 using Plots
+include("utils.jl")
 
-function image2vec(im)
-    im_mat = channelview(im)
-    n1, n2, n3 = size(im_mat)
-    vec = reshape(im_mat, n1*n2*n3,1)
-    return float.(vec), (n1,n2,n3)
-end
 
 #Create matrix representing video
 
@@ -25,25 +20,6 @@ for k in 2:56
     A[:,k] = vec_k
 end
 
-function QR_greedy(V, p = minimum(size(V)))
-    A = V
-    Q = zeros(size(A)[1],1)
-    R = zeros(1, size(A)[2])
-    error = zeros(p,1)
-    for j in 1:p
-        _,i = findmax(sqrt.(sum(A.^2, dims = 1)))   #Using the argmax
-        i = getindex(i,2)
-        q = A[:,i] / norm(A[:,i])
-        rT = q' * A
-        Q = [Q q]
-        R = [R; rT]
-        A = A - q * rT
-        error[j] = norm(A)
-    end
-    Q = Q[:,2:end]
-    R = R[2:end,:]
-    return Q,R,error
-end
 
 # Part A 
 

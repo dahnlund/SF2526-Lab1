@@ -2,13 +2,7 @@ using LinearAlgebra
 using Images, Colors
 using Printf
 using Plots
-
-function image2vec(im)
-    im_mat = channelview(im)
-    n1, n2, n3 = size(im_mat)
-    vec = reshape(im_mat, n1*n2*n3,1)
-    return float.(vec), (n1,n2,n3)
-end
+include("utils.jl")
 
 # B) Load the video into one matrix
 im = load("./testbild_snapshots/testbild_snapshots_0001.png")
@@ -33,29 +27,10 @@ im1_color = colorview(RGB, image)
 u = A[:,1]
 v = ones(size(A)[2],1)
 
+println("|| A - u*v' || = ")
 display(norm(A - u*v')) #Should equal 0 since all the images are the same
 
 # D)
-
-function QR_greedy(V, p = minimum(size(V)))
-    A = V
-    Q = zeros(size(A)[1],1)
-    R = zeros(1, size(A)[2])
-    error = zeros(p,1)
-    for j in 1:p
-        _,i = findmax(sqrt.(sum(A.^2, dims = 1)))   #Using the argmax
-        i = getindex(i,2)
-        q = A[:,i] / norm(A[:,i])
-        rT = q' * A
-        Q = [Q q]
-        R = [R; rT]
-        error[j] = norm(A)
-        A = A - q * rT
-    end
-    Q = Q[:,2:end]
-    R = R[2:end,:]
-    return Q,R,error
-end
 
 QR_time = @elapsed begin # Time the algo
 
@@ -66,8 +41,6 @@ QR_time = @elapsed begin # Time the algo
     V = tmp.V 
     U = Q*U_hat
 end
-
-display(norm(A - U*S*V'))
 
 # D) Compare QR_time with time from standard SVD 
 
