@@ -45,7 +45,7 @@ function QR_greedy(V, p = minimum(size(V)))
     return Q,R,error
 end
 
-Q, R, error = QR_greedy(A,20)
+Q, R, error = QR_greedy(A)
 tmp = svd(R)
 U_hat = tmp.U
 S = Diagonal(tmp.S)

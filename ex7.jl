@@ -39,7 +39,7 @@ function randomSVD(A,k,p)
     V = tmp.V
     U = Q*U_hat
 
-    return U,S,V
+    return U[:,1:k],S[1:k,1:k],V[:,1:k]
 end
 
 #Create matrix representing video
