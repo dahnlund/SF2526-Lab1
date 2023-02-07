@@ -39,6 +39,7 @@ for k = [5 10 20]
     for i in 1:56
         ex_vec = A_comp[:,i]
         image = reshape(ex_vec, size_)
+        display(image)
         image = map(clamp01nan, image)
         image_name = @sprintf("./compressed_images_rank%01d/comp%04d.png",k,i)
         save(image_name, colorview(RGB, image))

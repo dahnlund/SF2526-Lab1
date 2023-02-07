@@ -79,6 +79,27 @@ function randomSVD(A,k,p)
     return U[:,1:k],S[1:k,1:k],V[:,1:k]
 end
 
+function zalando_plot(z)
+    # Plotting helper function for the data
+    #    zalando_items.mat
+    # which were generated from the training data
+    # of the Zalando fashion dataset
+    
+    # https://research.zalando.com/welcome/mission/research-projects/fashion-mnist/
+    
+    n=28; # Image size
+    A=reshape(z,(n,n));
+    
+    # Normalize it
+    _,I = findmax(abs.(z))
+    za=z[I]
+    A=A./za
+    
+    B= 1 .- A' # It looks nicer with a white background.
+    # Plot
+    image_name = @sprintf("./images_ex8/image.png")
+    save(image_name, Gray.(B))
+end
 #=
 function [C,Z]=ID_col(A,kk)
     #=
