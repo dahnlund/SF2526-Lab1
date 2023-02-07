@@ -79,7 +79,7 @@ function randomSVD(A,k,p)
     return U[:,1:k],S[1:k,1:k],V[:,1:k]
 end
 
-function zalando_plot(z)
+function zalando_plot(z, image_number)
     # Plotting helper function for the data
     #    zalando_items.mat
     # which were generated from the training data
@@ -97,11 +97,11 @@ function zalando_plot(z)
     
     B= 1 .- A' # It looks nicer with a white background.
     # Plot
-    image_name = @sprintf("./images_ex8/image.png")
+    image_name = @sprintf("./images_ex8/image%01d.png", image_number)
+    B = map(clamp01nan, B)
     save(image_name, Gray.(B))
 end
-#=
-function [C,Z]=ID_col(A,kk)
+function ID_col(A,kk)
     #=
     A naive way to compute column ID by via the CPQR-factorization.
     
@@ -111,13 +111,18 @@ function [C,Z]=ID_col(A,kk)
       A approx C*Z
     First: Essentially same as Algorithm 1 (but with pivoting) with kk steps
     =#
-    [Q,R,P]=qr(A); 
-    Qs=Q(:,1:kk); 
-    Rs=R(1:kk,:);
-    # Now: Compute the ID col
-    R11=Rs(??)
-    R12=Rs(??)
-    C=A*P(:,??);
-    I=eye(kk,kk);
-    Z= [I, inv(R11)*R12]*P';
-=#
+    Q,R,P= qr(A, ColumnNorm()); 
+    P_matrix = zeros(size(A,2),size(A,2))
+    for i in 1:size(A,2)   # To match the format of matlab
+      P_matrix[P[i],i] = 1
+    end
+
+    n = size(A, 2)
+    
+    T = inv(R[1:kk,1:kk]) * R[1:kk,(kk+1):n]
+    Z = zeros(kk,n)
+    Z[:,P] = [Matrix(I,kk,kk) T]
+    C = A * P_matrix[:,1:kk]
+
+    return C,Z
+end
