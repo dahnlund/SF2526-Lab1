@@ -42,7 +42,7 @@ QR_time = @elapsed begin # Time the algo
     U = Q*U_hat
 end
 
-# D) Compare QR_time with time from standard SVD 
+# Compare QR_time with time from standard SVD 
 
 SVD_time = @elapsed begin
     svd(A)

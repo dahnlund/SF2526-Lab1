@@ -79,3 +79,43 @@ function randomSVD(A,k,p)
 
     return U[:,1:k],S[1:k,1:k],V[:,1:k]
 end
+
+"""
+function ID_col(A,kk)
+    # A naive way to compute column ID by via the CPQR-factorization.
+    # kk = number of vectors wanted
+    # C is selection of the columns of A
+    # For sufficiently large kk, we hope that
+    #   A approx C*Z
+    # First: Essentially same as Algorithm 1 (but with pivoting) with kk steps:
+    [Q,R,P]=qr(A); 
+    Qs=Q(:,1:kk); 
+    Rs=R(1:kk,:);
+    # Now: Compute the ID col
+    R11=Rs(??)
+    R12=Rs(??)
+    C=A*P(:,??);
+    I=eye(kk,kk);
+    Z= [I, inv(R11)*R12]*P';
+
+    return C,Z
+end
+"""
+function zalando_plot(z)
+    # Plotting helper function for the data
+    #    zalando_items.mat
+    # which were generated from the training data
+    # of the Zalando fashion dataset
+    # https://research.zalando.com/welcome/mission/research-projects/fashion-mnist/
+    
+    n=28; # Image size
+    A=reshape(z,n,n)
+    # Normalize it
+    _,I=maximum(abs(z))
+    za=z(I)
+    A=A/za
+    B=1-A' # It looks nicer with a white background.
+    # Plot
+    #imshow(1-A','InitialMagnification',1000)
+    colorview(RGB, B)
+end
