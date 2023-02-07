@@ -2,7 +2,7 @@ using LinearAlgebra
 using Images, Colors
 using Printf
 using Plots
-include("utils.jl")
+include("utils/utils.jl")
 
 # B) Load the video into one matrix
 im = load("./testbild_snapshots/testbild_snapshots_0001.png")

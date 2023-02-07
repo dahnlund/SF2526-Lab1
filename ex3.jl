@@ -1,6 +1,6 @@
 using LinearAlgebra
 using Random
-include("utils.jl")
+include("utils/utils.jl")
 
 
 # Part A

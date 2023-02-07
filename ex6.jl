@@ -2,7 +2,7 @@ using LinearAlgebra
 using Images, Colors
 using Printf
 using Plots
-include("utils.jl")
+include("utils/utils.jl")
 
 
 #Create matrix representing video

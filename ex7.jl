@@ -2,7 +2,7 @@ using LinearAlgebra
 using Images, Colors
 using Printf
 using Plots
-include("utils.jl")
+include("utils/utils.jl")
 
 im = load("./roundabout_snapshots/roundabout_snapshots_0001.png")
 vec, size_ = image2vec(im)
