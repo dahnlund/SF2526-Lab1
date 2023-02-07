@@ -2,7 +2,7 @@ using LinearAlgebra
 using Plots
 using Random
 using StatsPlots, DataFrames
-include("utils.jl")
+include("utils/utils.jl")
 
 #Part B
 A = [1 2 2003 2005; 2 2 2002 2004; 3 2 2001 2003; 4 7 7005 7012]

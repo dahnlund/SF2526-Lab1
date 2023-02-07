@@ -62,7 +62,6 @@ function image2vec(im)
     return float.(vec), (n1,n2,n3)
 end
 
-
 function randomSVD(A,k,p)
     #Stage A
     G = randn(size(A,2), k+p)
@@ -80,7 +79,7 @@ function randomSVD(A,k,p)
     return U[:,1:k],S[1:k,1:k],V[:,1:k]
 end
 
-
+#=
 function [C,Z]=ID_col(A,kk)
     #=
     A naive way to compute column ID by via the CPQR-factorization.
@@ -100,3 +99,4 @@ function [C,Z]=ID_col(A,kk)
     C=A*P(:,??);
     I=eye(kk,kk);
     Z= [I, inv(R11)*R12]*P';
+=#
